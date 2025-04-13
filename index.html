@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>МЕРР | свечи ручной работы</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Open+Sans&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'HelloJanuary';
+      src: url('Hello_January_script_cyrillic_Script.ttf') format('truetype');
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      color: #111;
+      background-color: #a89c85;
+    }
+
+/* Адаптация под мобильные устройства */
+@media (max-width: 768px) {
+  header {
+    padding: 10px;
+    text-align: center;
+  }
+
+  nav ul {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .product-card {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .product-card img {
+    width: 100%;
+    height: auto;
+  }
+
+  .products-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-content {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .about-content img {
+    width: 100%;
+    height: auto;
+  }
+
+  .section-title {
+    font-size: 28px;
+  }
+
+  .composition p {
+    font-size: 16px;
+  }
+
+  footer {
+    padding: 10px;
+    text-align: center;
+  }
+}
+
+    .navbar {
+      display: flex;
+      justify-content: center;
+      background: transparent;
+      position: fixed;
+      width: 100%;
+      padding: 1rem 0;
+      z-index: 1000;
+    }
+
+    .navbar ul {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .navbar a {
+      text-decoration: none;
+      color: white;
+      font-family: 'CourierNewCyr90n', monospace;
+      font-size: 1.2rem;
+      transition: color 0.3s ease;
+    }
+
+    .navbar a:hover {
+      color: #ffcc99;
+    }
+
+    .hero {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .background-video {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    .hero-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: white;
+      z-index: 10;
+      padding: 1rem;
+    }
+
+    .logo {
+      font-family: 'HelloJanuary', cursive;
+      font-size: 5rem;
+      opacity: 0.75;
+    }
+
+    .hero-content p {
+      font-family: 'HelloJanuary', cursive;
+      font-size: 3rem;
+      margin-top: 0.6rem;
+      opacity: 0.75;
+    }
+
+    h1, h2, h3, .section-title {
+      font-family: 'HelloJanuary';
+      font-size: 6rem;
+      text-align: center;
+      font-weight: 300;
+    }
+
+    #products .section-title,
+    #contact .section-title {
+      color: #fff;
+    }
+
+    .social-icons {
+      position: absolute;
+      top: 50%;
+      right: 2rem;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .icon {
+      width: 28px;
+      height: 28px;
+      background-size: cover;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .icon:hover {
+      transform: scale(1.1);
+    }
+
+    .email {
+      background-image: url('mail-icon.png');
+    }
+
+    .vk {
+      background-image: url('vk-icon.png');
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 4px;
+      margin-top: 4rem;
+    }
+
+    .scroll-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      padding: 2rem;
+    }
+
+    .scroll-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.7);
+      border: none;
+      font-size: 2rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      z-index: 2;
+      border-radius: 50%;
+      backdrop-filter: blur(4px);
+      transition: background 0.3s ease;
+    }
+
+    .scroll-btn:hover {
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .scroll-btn.left {
+      left: 10px;
+    }
+
+    .scroll-btn.right {
+      right: 10px;
+    }
+
+    .product-grid {
+      display: flex;
+      gap: 2rem;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      scroll-snap-type: x mandatory;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .product-grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Убираем анимацию для карточек товаров */
+.product-card {
+  flex: 0 0 auto;
+  width: 280px;
+  scroll-snap-align: start;
+  background-color: #e6e4e0;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  padding: 1rem;
+  text-align: center;
+  transition: transform 0.2s ease;
+  /* Убираем класс fade-in-left и анимацию */
+  /* opacity: 0; */
+  /* transform: translateX(-40px); */
+}
+
+/* Убираем анимацию для карточек товаров */
+.product-card:hover {
+  transform: translateY(-5px);
+}
+
+    .product-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .product-card h3 {
+      font-family: 'HelloJanuary';
+      font-size: 5rem;
+      text-align: center;
+      color: #444;
+      font-weight: 300;
+    }
+
+    .product-card p {
+      font-size: 1rem;
+      color: #666;
+      margin-bottom: 0.5rem;
+    }
+
+    .product-card .price {
+      font-weight: bold;
+      color: #d87b52;
+    }
+
+    .media-container {
+      position: relative;
+      width: 100%;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .preview-img,
+    .preview-video {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 8px;
+      transition: opacity 0.4s ease;
+      object-fit: cover;
+    }
+
+    .preview-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .product-card:hover .preview-img {
+      opacity: 0;
+    }
+
+    .product-card:hover .preview-video {
+      opacity: 1;
+    }
+
+    /* Оставляем анимацию для пунктов состава */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.fade-in-up.visible {
+  animation: fadeInUp 1s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+  </style>
+</head>
+
+<body>
+  <header>
+    <nav class="navbar">
+      <ul>
+        <li><a href="#main">Главная</a></li>
+        <li><a href="#products">Каталог</a></li>
+        <li><a href="#contact">О свечах</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="main">
+      <video autoplay muted loop playsinline class="background-video">
+        <source src="main.mp4" type="video/mp4">
+        Ваш браузер не поддерживает видео.
+      </video>
+      <div class="hero-content">
+        <h1 class="logo">МЕРР</h1>
+        <p>ароматические свечи ручной работы</p>
+      </div>
+      <div class="social-icons">
+        <a href="mailto:merr.svechi@mail.ru" class="icon email"></a>
+        <a href="https://vk.com/merrmerr" target="_blank" class="icon vk"></a>
+      </div>
+    </section>
+
+    <section id="products">
+      <h2 class="section-title">Свечи</h2>
+      <div class="scroll-wrapper fade-in-left">
+        <button class="scroll-btn left" aria-label="назад">&#10094;</button>
+        <div class="product-grid" id="scrollContainer">
+          <div class="product-card">
+            <div class="media-container">
+              <img src="1.jpg" alt="inspiration" class="preview-img">
+              <video class="preview-video" muted loop playsinline>
+                <source src="1.mp4" type="video/mp4">
+              </video>
+            </div>
+            <h3>inspiration</h3>
+            <p>Представьте, как лёгкий ветерок приносит с собой аромат цветущих лавандовых полей. Свеча с натуральным лавандовым маслом — это кусочек лета и покоя в каждой баночке. 100 мл.</p>
+            <p class="price">350 ₽</p>
+          </div>
+          <div class="product-card">
+            <div class="media-container">
+              <img src="2.jpg" alt="alternative" class="preview-img">
+              <video class="preview-video" muted loop playsinline>
+                <source src="2.mp4" type="video/mp4">
+              </video>
+            </div>
+            <h3>alternative</h3>
+            <p>Как прогулка по зимнему лесу с чашкой апельсинового чая — эта свеча сочетает бодрящие цитрусовые и прохладную хвою. Аромат наполняет дом энергией, оставаясь при этом тёплым и уютным. 100 мл.</p>
+            <p class="price">350 ₽</p>
+          </div>
+          <div class="product-card">
+            <div class="media-container">
+              <img src="3.jpg" alt="presence" class="preview-img">
+              <video class="preview-video" muted loop playsinline>
+                <source src="3.mp4" type="video/mp4">
+              </video>
+            </div>
+            <h3>presence</h3>
+            <p>Холодный северный ветер, чистота снежных просторов и свежесть хвойных лесов — эта свеча несёт в себе дух далёких северных земель. Аромат хвои наполнит воздух свежестью и умиротворением, словно вы оказались среди величественных лесов под зимним небом. 50 мл.</p>
+            <p class="price">250 ₽</p>
+          </div>
+          <div class="product-card">
+            <div class="media-container">
+              <img src="4.jpg" alt="advance" class="preview-img">
+              <video class="preview-video" muted loop playsinline>
+                <source src="4.mp4" type="video/mp4">
+              </video>
+            </div>
+            <h3>advance</h3>
+            <p>Лавандовое поле на закате, тёплый воздух, наполненный тонким цветочным ароматом. Воспоминание о летнем вечере. Нежный, обволакивающий запах успокаивает мысли. 200 мл.</p>
+            <p class="price">450 ₽</p>
+          </div>
+          <div class="product-card">
+            <div class="media-container">
+              <img src="5.jpg" alt="sublimation" class="preview-img">
+              <video class="preview-video" muted loop playsinline>
+                <source src="5.mp4" type="video/mp4">
+              </video>
+            </div>
+            <h3>sublimation</h3>
+            <p>Свежесть утреннего леса и яркие нотки спелых цитрусовых — этот аромат бодрит и очищает пространство. Свеча словно переносит вас на солнечную поляну среди хвойных деревьев, где воздух искрится прохладой и светом. 200 мл.</p>
+            <p class="price">450 ₽</p>
+          </div>
+        </div>
+        <button class="scroll-btn right" aria-label="вперёд">&#10095;</button>
+      </div>
+<section id="contact">
+
+  <!-- Заголовок ниже -->
+  <h2 class="section-title" style="margin-top: 4rem; margin-bottom: 2rem;">О свечах</h2>
+
+  <!-- Центрированный текст над изображением -->
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <p class="fade-in-up" style="text-align: center; max-width: 800px; margin: 1rem auto 2rem auto; color: #fff; font-size: 1.2rem; line-height: 1.6;">
+      Свечи "Мерр" — это гармоничное сочетание уюта, эстетики и натуральности. Каждая свеча изготавливается вручную с особым вниманием к деталям.
+    </p>
+  </div>
+
+  <!-- Блок с изображением и составом -->
+<div style="display: flex; align-items: flex-start; gap: 4rem; padding-top: 4rem; padding-bottom: 4rem;">
+
+<!-- Левая часть — PNG изображение, прижатое к краю -->
+<div style="margin-left: 0; margin-top: -90px;"> <!-- Поднимем изображение -->
+  <img src="1.png" alt="свеча" style="height: 700px; width: auto; display: block;">
+</div>
+
+<!-- Правая часть — заголовок и список -->
+<div style="color: white;">
+  <h3 style="font-family: 'HelloJanuary', cursive; font-size: 5rem; margin-bottom: 2rem;">Состав</h3>
+  <ul style="list-style: none; padding-left: 0; font-size: 1.4rem;">
+    <li class="fade-in-up" style="display: flex; align-items: flex-start; margin-bottom: 2rem;">
+      <img src="02.png" alt="воск" style="height: 150px; width: auto; margin-right: 1rem;">
+      <div>
+        <div style="font-weight: bold;">Соевый воск</div>
+        <div style="font-size: 1.2rem; margin-top: 0.25rem;">это натуральный, экологически чистый материал, который горит медленно и равномерно, не выделяя токсичных веществ. Он идеально сохраняет ароматы и подходит для создания безопасных и долговечных свечей.</div>
+      </div>
+    </li>
+
+    <li class="fade-in-up" style="display: flex; align-items: flex-start; margin-bottom: 2rem;">
+      <img src="03.png" alt="масло" style="height: 150px; width: auto; margin-right: 1rem;">
+      <div>
+        <div style="font-weight: bold;">Натуральные ароматические масла</div>
+        <div style="font-size: 1.2rem; margin-top: 0.25rem;">это концентрированные экстракты натуральных растений, которые используются для создания уникальных запахов и ароматерапевтических эффектов.</div>
+      </div>
+    </li>
+
+    <li class="fade-in-up" style="display: flex; align-items: flex-start; margin-bottom: 2rem;">
+      <img src="04.png" alt="фитиль" style="height: 150px; width: auto; margin-right: 1rem;">
+      <div>
+        <div style="font-weight: bold;">Деревянные фитили</div>
+        <div style="font-size: 1.2rem; margin-top: 0.25rem;">обеспечивают более спокойное и равномерное горение, создавая приятный треск.</div>
+      </div>
+    </li>
+  </ul>
+</div>
+</div>
+
+  <!-- Атмосфера поднята ближе -->
+  <section id="atmosphere" style="max-width: 1000px; margin: 3rem auto 5rem auto; text-align: center; color: #fff;">
+  <h3 style="font-family: 'HelloJanuary', cursive; font-size: 6rem; margin-bottom: 1rem;">Атмосфера</h3>
+  <p class="fade-in-up" style="font-size: 1.3rem; line-height: 1.6;">
+    Свечи <strong>МЕРР</strong> создают уют, помогают расслабиться и становятся частью личных ритуалов: утреннего кофе, вечернего чтения или душевной встречи.
+  </p>
+</section>
+
+<!-- Карусель -->
+<div class="carousel-container" style="position: relative; max-width: 100%; overflow: hidden; margin-top: 3rem;">
+  <div class="carousel-track" style="display: flex; gap: 1rem; transition: transform 0.5s ease;">
+    <img src="а1.jpg" alt="а1" style="width: 30%; height: auto; border-radius: 8px;">
+    <img src="а2.jpg" alt="а2" style="width: 30%; height: auto; border-radius: 8px;">
+    <img src="а3.jpg" alt="а3" style="width: 30%; height: auto; border-radius: 8px;">
+    <img src="а4.jpg" alt="а4" style="width: 30%; height: auto; border-radius: 8px;">
+    <img src="а5.jpg" alt="а5" style="width: 30%; height: auto; border-radius: 8px;">
+    <img src="а6.jpg" alt="а6" style="width: 30%; height: auto; border-radius: 8px;">
+    <img src="а7.jpg" alt="а7" style="width: 30%; height: auto; border-radius: 8px;">
+    <img src="а8.jpg" alt="а8" style="width: 30%; height: auto; border-radius: 8px;">
+    <img src="а9.jpg" alt="а9" style="width: 30%; height: auto; border-radius: 8px;">
+    <img src="а10.jpg" alt="а10" style="width: 30%; height: auto; border-radius: 8px;">
+    <img src="а11.jpg" alt="а11" style="width: 30%; height: auto; border-radius: 8px;">
+  </div>
+  <button class="carousel-prev" style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%); background: rgba(0, 0, 0, 0.5); color: white; border: none; padding: 1rem; cursor: pointer;">&#10094;</button>
+  <button class="carousel-next" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); background: rgba(0, 0, 0, 0.5); color: white; border: none; padding: 1rem; cursor: pointer;">&#10095;</button>
+</div>
+</section>
+
+<script>
+  const carouselTrack = document.querySelector('.carousel-track');
+  const totalImages = document.querySelectorAll('.carousel-track img').length;
+  let currentIndex = 0;
+
+  // Автопрокрутка карусели
+  function autoScrollCarousel() {
+    currentIndex = (currentIndex + 1) % totalImages;
+    updateCarouselPosition();
+  }
+
+  function updateCarouselPosition() {
+    const offset = -currentIndex * 50; // Сдвиг на 100% для каждого изображения
+    carouselTrack.style.transform = `translateX(${offset}%)`;
+  }
+
+  // Интервал прокрутки
+  setInterval(autoScrollCarousel, 4000); // Каждые 4 секунды
+
+</script>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2025 МЕРР. Все права защищены.</p>
+  </footer>
+
+  <script>
+    document.querySelectorAll('.product-card').forEach(card => {
+      const video = card.querySelector('video');
+      if (video) {
+        card.addEventListener('mouseenter', () => {
+          video.currentTime = 0;
+          video.play();
+        });
+        card.addEventListener('mouseleave', () => {
+          video.pause();
+        });
+      }
+    });
+
+    const scrollContainer = document.getElementById('scrollContainer');
+    const leftBtn = document.querySelector('.scroll-btn.left');
+    const rightBtn = document.querySelector('.scroll-btn.right');
+
+    const scrollAmount = 320;
+
+    leftBtn.addEventListener('click', () => {
+      scrollContainer.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    });
+
+    rightBtn.addEventListener('click', () => {
+      scrollContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    });
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, {
+  threshold: 0.3
+});
+
+document.querySelectorAll('.fade-in-up').forEach(el => {
+  observer.observe(el);
+});
+  </script>
+</body>
+</html>
