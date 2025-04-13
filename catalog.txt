@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Каталог | МЕРР</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <ul>
+      <li><a href="index.html">Главная</a></li>
+      <li><a href="catalog.html">Каталог</a></li>
+      <li><a href="contacts.html">Контакты</a></li>
+    </ul>
+  </nav>
+
+  <section class="new-products">
+    <h2>Все свечи</h2>
+    <div class="products-grid">
+      <div class="product-card">
+        <video muted loop preload="none" poster="thumb.jpg">
+          <source src="candle-video.mp4" type="video/mp4" />
+        </video>
+        <div class="info">
+          <h3>Свеча "Лес"</h3>
+          <p>Ноты ели и бергамота</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const cards = document.querySelectorAll('.product-card');
+    cards.forEach(card => {
+      const video = card.querySelector('video');
+      card.addEventListener('mouseenter', () => video.play());
+      card.addEventListener('mouseleave', () => video.pause());
+    });
+  </script>
+</body>
+</html>
